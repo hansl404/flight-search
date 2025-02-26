@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+}
+
+/* body {
+    background-color: #212121;
+    color: white;
+} */
+
+#overall-div {
+    padding: 1em;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#top-div {
+    display: flex;
+    justify-content: center;
+    color: #0d6efd;
+    font-size: 20px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#mid-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    border: 1px solid black;
+    background-color: rgb(162, 162, 162);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 80%;
+    font-family: Verdana, sans-serif;
+    border-radius: 10px;
+}
+
+#get-curr-loc-btn {
+    border: 1px solid black;
+    cursor: pointer;
+    padding-left: 1em;
+    padding-right: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: white;
+    background-color: #0d6efd;
+    height: 55px;
+}
+
+#inputs {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+
+#inputs input {
+    width: 25%;
+    font-size: 16px;
+}
+
+#inputs button {
+    width: 25%;
+}
+
+#search-btn {
+    border: 1px solid black;
+    padding: 0.75em;
+    cursor: pointer;
+    background-color: #0d6efd;
+    color: white;
+    font-size: 20px;
+}
+
+.default-bg-img {
+    display: flex;
+    z-index: -1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: calc(50% - 200px);
+    left: calc(50% - 250px); 
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    box-shadow:
+        inset 0 0 50px #fff,
+        inset 20px 0 80px #f0f,
+        inset -20px 0 80px #0ff,
+        inset 20px 0 300px #f0f,
+        inset -20px 0 300px #0ff,
+        0 0 50px #fff,
+        -10px 0 80px #f0f,
+        10px 0 80px #0ff;
+}
+
+.welcome-msg-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    border-radius: 2em;
+    white-space: nowrap;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.welcome-msg-container h2 {
+    display: flex;
+    font-size: 30px;
+    padding: 1em;
+    color: black;
+}
+
+#airlines {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;*/
+    /* align-items: center;*/
+    /* border: 1px solid black; */
+    margin-top: 1em;
+    margin-bottom: 1em;
+    gap: 10px;
+    width: 80%;
+    font-family: Verdana, sans-serif;
+}
+
+#airlines button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #0d6efd;
+    cursor: pointer;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#airlines button:hover {
+    text-decoration: line-through;
+    background-color: #dd3737;
+}
+
+.airline-filter-out {
+    background-color: rgb(128, 128, 128) !important;
+    text-decoration: line-through !important;
+    opacity: 0.5 !important;
+    color: black !important;
+}
+
+.alliance-row {
+    display: flex;
+    width: 100%;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+#results {
+    width: 80%;
+    font-family: Verdana, sans-serif;
+    font-size: 16px;
+}
+
+.flight-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    width: 100%;
+    flex: 1;
+    padding-top: 1.25em;
+    padding-bottom: 1.25em;
+    padding-left: 1em;
+    padding-right: 1em;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.flight-container:hover {
+    outline: 2px solid rgb(142, 142, 252);
+    border: 1px solid rgb(142,142,252);
+    cursor: pointer;
+}
+
+.flight-container div {
+    min-width: 240px;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+}
+
+.flight-logo {
+    width: 50px;
+    height: 50px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-box {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 70%;
+    color: black;
+    font-family: Verdana, sans-serif;
+    font-size: 16px;
+}
+
+.title {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
+
+.box-content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.itinerary {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+    padding: 2em;
+}
+
+.itinerary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
+    box-sizing: border-box;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.itinerary-item:hover {
+    outline: 1px solid blue;
+}
+
+.layover-item {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    border: 1px solid black;
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flights</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="overall-div">
+        
+        <div id="top-div">
+            <h1>Flights</h1>
+        </div>
+        
+        <div id="mid-div">
+            <div id="inputs">
+                <div id="get-curr-loc-btn">➤</div>
+                <input type="text" list="airports" id="start" placeholder="Starting Airport IATA Code (JFK)">
+                <input type="text" list="airports" id="end" placeholder="Ending Airport IATA Code (ICN)">
+                <input type="date" id="date">
+                <button id="search-btn">Search</div>
+            </div>
+
+            <datalist id="airports">
+                <option value="JFK"></option>
+                <option value="LGA"></option>
+                <option value="EWR"></option>
+                <option value="BOS"></option>
+                <option value="PHL"></option>
+                <option value="BWI"></option>
+                <option value="IAD"></option>
+                <option value="DCA"></option>
+                <option value="RDU"></option>
+                <option value="CLT"></option>
+                <option value="ATL"></option>
+                <option value="MIA"></option>
+                <option value="FLL"></option>
+                <option value="MCO"></option>
+                <option value="DFW"></option>
+                <option value="IAH"></option>
+                <option value="ORD"></option>
+                <option value="DEN"></option>
+                <option value="MSP"></option>
+                <option value="CLE"></option>
+                <option value="LAS"></option>
+                <option value="LAX"></option>
+                <option value="SFO"></option>
+                <option value="OAK"></option>
+                <option value="PHX"></option>
+                <option value="DTW"></option>
+                <option value="SLC"></option>
+                <option value="SEA"></option>
+                <option value="HND"></option>
+                <option value="NRT"></option>
+                <option value="ITM"></option>
+                <option value="ICN"></option>
+                <option value="GMP"></option>
+                <option value="PEK"></option>
+                <option value="PVG"></option>
+                <option value="SHA"></option>
+                <option value="CAN"></option>
+                <option value="SZX"></option>
+                <option value="CKG"></option>
+                <option value="TSA"></option>
+                <option value="TPE"></option>
+                <option value="HKG"></option>
+                <option value="SIN"></option>
+                <option value="KLL"></option>
+            </datalist>
+
+            <div id="airlines" style="display: none;">
+                <div id='SKYTEAM-row' class="alliance-row">
+                    <button id="SKYTEAM">Skyteam</button>
+                    <button id="KE">Korean</button>
+                    <button id="OZ">Asiana</button>
+                    <button id="DL">Delta</button>
+                    <button id="CI">China Airlines</button>
+                </div>
+                <div id='STAR_ALLIANCE-row' class="alliance-row">
+                    <button id="STAR_ALLIANCE">Star Alliance</button>
+                    <button id="UA">United</button>
+                    <button id="AC">Canada</button>
+                    <button id="NH">ANA</button>
+                    <button id="SQ">Singapore</button>
+                    <button id="BR">EVA</button>
+                    <button id="ET">Ethiopian</button>
+                </div>
+                <div id='ONEWORLD-row' class="alliance-row">
+                    <button id="ONEWORLD">Oneworld</button>
+                    <button id="AA">American</button>
+                    <button id="JL">Japan</button>
+                    <button id="AS">Alaska</button>
+                    <button id="HA">Hawaiian</button>
+                    <button id="CX">Cathay</button>
+                </div>
+                <div id='NONALLIANCE-row' class="alliance-row">
+                    <button id="NONALLIANCE">Non-Alliance</button>
+                    <button id="B6">Jetblue</button>
+                    <button id="NK">Spirit</button>
+                    <button id="F9">Frontier</button>
+                    <button id="TR">Scoot</button>
+                    <button id="7C">Jeju</button>
+                    <button id="TW">T-Way</button>
+                    <button id="LJ">Jin Air</button>
+                    <button id="YP">Premia</button>
+                    <button id="JX">Starlux</button>
+                    <button id="EY">Ethiad</button>
+                    <button id="QR">Qatar</button>
+                </div>
+            </div>
+
+            <div id='bigbutton' class="default-bg-img">
+                <div id='bigbuttonmsg' class="welcome-msg-container">
+                    <h2>Search Flights</h2>
+                </div>
+            </div>
+
+            <div id="results"></div>
+
+        </div>
+        
+        <div id="bottom-div"></div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
