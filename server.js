@@ -10,13 +10,11 @@ app.use(cors())
 
 
 app.get('/api/search', async (req,res) => {
-    const {start,end,gl,hl,currency,date,type,sort_by} = req.query
-    console.log(start)
+    const {start,end,gl,hl,currency,date,type,sort_by,include_airlines} = req.query
 
-    const apiKey = 'Please add your own API key from https://serpapi.com/'
+    const apiKey = 'INSERT_API_KEY_HERE'
     
-    const url = `https://serpapi.com/search.json?engine=google_flights&departure_id=${start}&arrival_id=${end}&gl=${gl}&hl=${hl}&currency=${currency}&outbound_date=${date}&type=${type}&sort_by=${sort_by}&api_key=${apiKey}`
-    console.log(url)
+    const url = `https://serpapi.com/search.json?engine=google_flights&departure_id=${start}&arrival_id=${end}&gl=${gl}&hl=${hl}&currency=${currency}&outbound_date=${date}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines}&api_key=${apiKey}`
     
     try {
         const response = await axios.get(url)

@@ -2,18 +2,20 @@
     margin: 0;
 }
 
-/* body {
-    background-color: #212121;
-    color: white;
-} */
+body {
+    background-color: #fbfbfb;
+    /*color: white;*/
+}
 
 #overall-div {
     padding: 1em;
-    background-color: #ffffff;
+    background-color: #fbfbfb;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* background-color: black; */
+    /* color: white; */
 }
 
 #top-div {
@@ -98,6 +100,7 @@
         0 0 50px #fff,
         -10px 0 80px #f0f,
         10px 0 80px #0ff;
+    cursor: pointer;
 }
 
 .welcome-msg-container {
@@ -116,14 +119,12 @@
     font-size: 30px;
     padding: 1em;
     color: black;
+    /* color: white; */
 }
 
 #airlines {
     display: flex;
     flex-direction: column;
-    /* justify-content: center;*/
-    /* align-items: center;*/
-    /* border: 1px solid black; */
     margin-top: 1em;
     margin-bottom: 1em;
     gap: 10px;
@@ -176,6 +177,7 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid black;
+    /* border: 1px solid white; */
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     width: 100%;
@@ -231,11 +233,12 @@
 }
 
 .title {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .box-content {
