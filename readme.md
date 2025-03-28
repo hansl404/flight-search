@@ -8,7 +8,7 @@ Free tier includes 100 calls/month
 
 <img width="1757" alt="Image" src="https://github.com/user-attachments/assets/cf41ce1a-5601-47ec-87e4-5922c242280a" />
 
-<img width="1749" alt="Image" src="https://github.com/user-attachments/assets/23fae552-cef6-446a-921f-872255bed88b" />
+<img width="1754" alt="Image" src="https://github.com/user-attachments/assets/81bcb66b-9c4e-45eb-9832-9a913d87bd33" />
 
 **How to Use:**
 - First open server.js
