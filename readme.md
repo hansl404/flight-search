@@ -4,6 +4,8 @@ Insert API key at server.js. Get API key at https://serpapi.com/
 
 Free tier includes 100 calls/month
 
+<img width="1778" alt="Image" src="https://github.com/user-attachments/assets/9083e30e-50f1-40c3-940f-fdc0d8022037" />
+
 **How to Use:**
 - First open server.js
 - Run `npm start`
