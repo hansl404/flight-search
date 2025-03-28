@@ -6,6 +6,10 @@ Free tier includes 100 calls/month
 
 <img width="1778" alt="Image" src="https://github.com/user-attachments/assets/9083e30e-50f1-40c3-940f-fdc0d8022037" />
 
+<img width="1757" alt="Image" src="https://github.com/user-attachments/assets/cf41ce1a-5601-47ec-87e4-5922c242280a" />
+
+<img width="1749" alt="Image" src="https://github.com/user-attachments/assets/23fae552-cef6-446a-921f-872255bed88b" />
+
 **How to Use:**
 - First open server.js
 - Run `npm start`
