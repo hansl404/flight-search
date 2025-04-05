@@ -1,8 +1,6 @@
-Customize airlines, airports, point values, credit card cashback in scriptjs
-
-Insert API key at server.js. Get API key at https://serpapi.com/
-
-Free tier includes 100 calls/month
+**Intro:**
+- Customizable flight search that scrapes the Google Flights API and automatically displays true cost after credit card cash back and airline points.
+- Simpler UI for filtering airlines
 
 <img width="1778" alt="Image" src="https://github.com/user-attachments/assets/9083e30e-50f1-40c3-940f-fdc0d8022037" />
 
@@ -11,11 +9,12 @@ Free tier includes 100 calls/month
 <img width="1754" alt="Image" src="https://github.com/user-attachments/assets/81bcb66b-9c4e-45eb-9832-9a913d87bd33" />
 
 **How to Use:**
+- Insert API key at `server.js` file. Get API key at https://serpapi.com/
+- Customize airlines, airports, point values, credit card cashback in `script.js` file.
 - First open server.js
 - Run `npm start`
 - Open index.html in any browser
 - Type in airport code
-
 
 **Notes:**
 - Flights are all one-way
@@ -24,6 +23,7 @@ Free tier includes 100 calls/month
 - Stats tab includes airline points earned, value of those points, cost of flight after factoring in cashback and points, and extra cost per hour compared to cheapest flight
 - Please use your own API key, as the free tier is limited to 100 calls per month
 - To save on number of API calls, the search will return all flights for that destination, and all filtering is done on frontend
+- Most of the flights are relevant to trans-Pacific airlines, but can add more airlines by going to the data object in `script.js` and adding IATA code to the `include_airlines` string, as well as adding the HTML component if you want to add filter functionality.
 
 **Points:**
 - Points are merely estimations subject to change.
