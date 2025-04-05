@@ -1,4 +1,3 @@
-**Intro:**
 Customizable flight search that scrapes the Google Flights API and automatically displays true cost after credit card cash back and airline points + simpler UI for filtering airlines
 
 <img width="1778" alt="Image" src="https://github.com/user-attachments/assets/9083e30e-50f1-40c3-940f-fdc0d8022037" />
