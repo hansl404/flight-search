@@ -22,6 +22,7 @@ Customizable flight search that scrapes the Google Flights API and automatically
 - Please use your own API key, as the free tier is limited to 100 calls per month
 - To save on number of API calls, the search will return all flights for that destination, and all filtering is done on frontend
 - Most of the flights are relevant to trans-Pacific airlines, but can add more airlines by going to the data object in `script.js` and adding IATA code to the `include_airlines` string, as well as adding the HTML component if you want to add filter functionality.
+- For the Extra Cost/Hour feature to work properly, need to click on the cheapest flight every time you filter (since the cost doesn't load until clicking the box for now).
 
 **Points:**
 - Points are merely estimations subject to change.
