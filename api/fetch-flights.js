@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default async function handler(req, res) {
   const { start, end, date } = req.query;
-  const apiKey = process.env.SERPAPI_KEY;
+  const apiKey = process.env.apiKey;
 
   if (!apiKey) {
     return res.status(500).json({ error: "Missing SERPAPI_KEY" });
