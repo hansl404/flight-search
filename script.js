@@ -363,7 +363,7 @@ const search = async() => {
 
         bigbutton.style.display = 'none'
         airlines.style.display = 'block'
-        const url = `/api/search?start=${start}&end=${end}&date=${date}&gl=${gl}&hl=${hl}&currency=${currency}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines_url}`
+        const url = `/api/fetch-flights?start=${start}&end=${end}&date=${date}&gl=${gl}&hl=${hl}&currency=${currency}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines_url}`
 
         try {
             const response = await fetch(url)
