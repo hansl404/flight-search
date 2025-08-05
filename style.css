@@ -9,7 +9,7 @@ body {
 
 #overall-div {
     padding: 1em;
-    background-color: #fbfbfb;
+    background-color: #fbfbfb00;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -162,6 +162,7 @@ body {
 .alliance-row {
     display: flex;
     width: 100%;
+    font-size: 12px;
     /* justify-content: center;
     align-items: center; */
 }
@@ -197,8 +198,7 @@ body {
 }
 
 .flight-container div {
-    min-width: 240px;
-    /* border: 1px solid red; */
+    min-width: 220px;
     display: flex;
     justify-content: center;
 }

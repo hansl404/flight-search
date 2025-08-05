@@ -2,7 +2,7 @@
 
 // Data stuff and customization
 const data = {
-    cpp: {"KE":1.7,"UA":1.3,"AS":1.4,"AA":1.3,"B6":1.3,"CX":1.3},
+    cpp: {"KE":1.7,"UA":1.3,"AS":1.3,"AA":1.4,"B6":1.3,"CX":1.3},
     korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269},
     cathay_miles: {"CAN":300,"TPE":300,"CKG":300,"SZX":300,"ICN":800,"HND":800,"NRT":800,"SIN":800,"KUL":800,"PVG":800,"SHA":800,"PKX":800,"PEK":800,"KIX":800,"LAX":2500,"SFO":2500,"SEA":2500,"ORD":3000,"IAD":3000,"JFK":3000,"DFW":3000,"BOS":3000},
     cashback: 3,
@@ -183,7 +183,7 @@ async function openPopup(flight) {
     const logo = document.createElement('img')
     logo.src = flight.airline_logo
     logo.classList.add('flight-logo')
-    let airline_txt = flight.flights[0].arrival_airport.time.split(" ")[0]  // "3/15/2024 - American Airlines, American Airlines
+    let airline_txt = flight.flights[0].departure_airport.time.split(" ")[0]  // "3/15/2024 - American Airlines, American Airlines
     let layovers = null
     if (flight.layovers) {
         layovers = flight.layovers
@@ -338,12 +338,32 @@ const search = async() => {
             start = '/m/0ftkx'
         }
 
+        if (end === 'NYC') {
+            end = '/m/02_286'
+        } else if (end == 'SEL' || end == 'SEOUL') {
+            end = '/m/0hsqf'
+        } else if (end == 'TYO' || end == 'TOKYO') {
+            end = '/m/07dfk'
+        } else if (end == 'WAS' || end == 'DC') {
+            end = '/m/0rh6k'
+        } else if (end == 'BJS' || end == 'BEIJING') {
+            end = '/m/01914'
+        } else if (end == 'CHI' || end == 'CHICAGO') {
+            end = '/m/01_d4'
+        } else if (end == 'Shanghai') {
+            end = '/m/06wjf'
+        } else if (end == 'Taipei') {
+            end = '/m/0ftkx'
+        }
+        console.log(start)
+        console.log(end)
+
         // for the distance calculation in stats, do at the end
         // getDist(start,end).then(dist => console.log(dist))
 
         bigbutton.style.display = 'none'
         airlines.style.display = 'block'
-        const url = `http://localhost:3000/api/search?start=${start}&end=${end}&date=${date}&gl=${gl}&hl=${hl}&currency=${currency}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines_url}`
+        const url = `/api/search?start=${start}&end=${end}&date=${date}&gl=${gl}&hl=${hl}&currency=${currency}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines_url}`
 
         try {
             const response = await fetch(url)
