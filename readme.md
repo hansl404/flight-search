@@ -1,19 +1,17 @@
 Clearcost Flights - A customizable flight search that scrapes the Google Flights API and automatically displays true cost after credit card cash back and airline points + faster/simpler UI for filtering airlines
 
+[View Deployed App Prototype](https://clearcost.vercel.app/)
+
 <img width="1778" alt="Image" src="https://github.com/user-attachments/assets/9083e30e-50f1-40c3-940f-fdc0d8022037" />
 
 <img width="1757" alt="Image" src="https://github.com/user-attachments/assets/cf41ce1a-5601-47ec-87e4-5922c242280a" />
 
 <img width="1754" alt="Image" src="https://github.com/user-attachments/assets/81bcb66b-9c4e-45eb-9832-9a913d87bd33" />
 
-**How to Use:**
-- Insert API key at `server.js` file. Get API key at https://serpapi.com/
-- Customize airlines, airports, point values, credit card cashback in `script.js` file.
-- First open server.js
-- Run `npm start`
-- Open index.html in any browser
-
-[View Deployed App](https://clearcost.vercel.app/)
+**How to Customize:**
+- Fork this repo
+- Get API key at https://serpapi.com/ and put the key into the environment variables on Vercel before deploying
+- Customize airlines, airports, point values, credit card cashback in the `data` object of the `script.js` file.
 
 **Notes:**
 - Flights are all one-way
