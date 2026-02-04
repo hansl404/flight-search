@@ -39,7 +39,7 @@ airline_buttons.forEach(button => {
 // Helper functions
 const basefare = (price) => {
     let security = 5.6
-    let flight_segment = 4.8
+    let flight_segment = 5.3
     let pec = 4.5
     let tax = (price - security - flight_segment - pec) * 0.075
     return price - tax - security - flight_segment - pec
@@ -148,7 +148,7 @@ function pointData(airline,start,end,price,miles=0) {
         if (start != 'HKG' && end != 'HKG') {  // layover in HK
             points = data.cathay_miles[start] + data.cathay_miles[end]
         } else if (end == 'HKG' && start in data.cathay_miles) {   // ? -> HKG
-            points = data.korean_miles[start]
+            points = data.cathay_miles[start]
         } else if (start == 'HKG' && end in data.cathay_miles) {  // HKG -> ?
             points = data.cathay_miles[end]
         } else {
