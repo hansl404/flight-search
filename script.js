@@ -130,10 +130,10 @@ function pointData(airline,start,end,price,miles=0) {
         }
         points_val = points * data.cpp.KE
     } else if (airline == 'United') {
-        points = basefare(price) * 0  // assuming basic economy, update to 5x for main
+        points = basefare(price) * 0  // assuming basic economy, (update to 3x for main) or (6x if main AND have United card)
         points_val = points * data.cpp.UA
     } else if (airline == 'American') {
-        points = basefare(price) * 0  // assuming basic economy, (update to 3x for main) or (6x if main AND have United card)
+        points = basefare(price) * 0  // assuming basic economy, update to 5x for main
         points_val = points * data.cpp.AA
     } else if (airline == 'Air Canada') {
         points = miles * 0.5
