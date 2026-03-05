@@ -1,4 +1,4 @@
-Clearcost Flights - A customizable flight search that scrapes the Google Flights API and automatically displays true cost after credit card cash back and airline points + faster/simpler UI for filtering airlines
+Clearcost Flights - A customizable flight search that scrapes the Google Flights API and automatically displays true cost after credit card cash back and airline points + faster/simpler UI for filtering airlines. At the moment, optimized for Korean Airlines, Cathay Pacific, and U.S. airlines.
 
 [View Deployed App Prototype](https://clearcost.vercel.app/)
 
@@ -12,21 +12,22 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 - Fork this repo
 - Get API key at https://serpapi.com/ and put the key into the environment variables on Vercel before deploying
 - Customize airlines, airports, point values, credit card cashback in the `data` object of the `script.js` file.
+- To test locally, need to create a `server.js` file for proxy
 
 **Notes:**
-- Flights are all one-way
-- Flight prices are all for economy class (or basic economy), and sorted in order of cheapest price first
+- Flights are all one-way for now
+- Flight prices are all for economy class (or basic economy), and sorted in order of cheapest ticket price first (not the "true" cost which is calculated later)
 - Don't recommend including Chinese airlines because this uses Google Flights API, and Chinese airlines should be booked through trip.com, not Google Flights
-- Stats tab includes airline points earned, value of those points, cost of flight after factoring in cashback and points, and extra cost per hour compared to cheapest flight
+- The "Extra Cost/Hour" stat is only for comparing a more expensive and shorter flight than the ticket with the cheapest base ticket price. If a flight both costs more and takes longer, this will show as $0 extra cost per hour (be careful to avoid!)
 - Please use your own API key, as the free tier is limited to 250 calls per month
 - To save on number of API calls, the search will return all flights for that destination, and all filtering is done on frontend
-- Most of the flights are relevant to trans-Pacific airlines, but can add more airlines by going to the data object in `script.js` and adding IATA code to the `include_airlines` string, as well as adding the HTML component if you want to add filter functionality.
-- For the Extra Cost/Hour feature to work properly, need to click on the cheapest flight every time you filter (since the cost doesn't load until clicking the box for now).
+- **To add more airlines:** Go to the data object in `script.js` and adding IATA code to the `include_airlines` string, as well as adding the HTML component if you want to add filter functionality for the newly added airline
 
 **Points:**
-- Points are merely estimations subject to change.
-- To adjust which airline points accured, modify the pointData function in script.js to assign the point value to the corresponding airline (UA,KE,AA,etc.)
-- Adjust values of each airline currency in the global `data` object.
+- As of March 2026, miles can no longer be earned when flying basic economy on U.S. airlines (except Alaska and JetBlue). For this reason, the points earned portion of the calculation has become mostly negligible for now (until manual points are introduced to this app later).
+- However, Korean Air and Cathay points earned should still be fairly accurate.
+- More customization options coming soon
+- Default currency values are listed in the `data` object. However, they can now be modified in the frontend.
 - If there are multiple flights on partner airlines, this will have the most inaccuracy. It just assumes the starting airline is the currency you will accumulate (for example, Alaska -> Air Premia assumes all points accured will be Alaska, even if it is not within same alliance)
 - Miles flown is not entirely correct, because each airline counts miles slightly differently. The Korean miles one is accurate because there is an object specific for how Korean Air counts mileage, but the others are rough estimates.
 - It is assumed points will be occured in lowest realistic booking class. For example, assuming every flight on Air Canada earns 50% miles. In reality, this will vary differently by flight, but there was no way to scrape booking class, so there are only estimates.
@@ -34,5 +35,6 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 - But some will have accural, like United will count almost all Air Canada flights with 50% mile flown.
 
 **Next Steps:**
-- The extra cost per hour calculation is a bit wonky on some results. Working to address this bug next.
-- Currently working to add ability to modify cashback and CPP variables on the frontend.
+- Flying out of Gimpo Airport with Korean Air will break the points calculation at the moment (due to Korean Air miles calculations assuming Incheon Airport is the start/layover/end). Working to include Gimpo Airport next.
+- Currently working to let users manually input miles earned for more accurate calculations.
+- More Working to support more airlines without cluttering the UI.
