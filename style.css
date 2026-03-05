@@ -33,7 +33,7 @@ body {
     align-items: center;
     margin-top: 10px;
     border: 1px solid black;
-    background-color: rgb(162, 162, 162);
+    background-color: #dde2ee;
     padding-top: 1em;
     padding-bottom: 1em;
     width: 80%;
@@ -42,7 +42,7 @@ body {
 }
 
 #get-curr-loc-btn {
-    border: 1px solid black;
+    border: 1px solid #0d6efd;
     cursor: pointer;
     padding-left: 1em;
     padding-right: 1em;
@@ -52,31 +52,56 @@ body {
     font-size: 20px;
     color: white;
     background-color: #0d6efd;
-    height: 55px;
+    height: 44px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 #inputs {
     display: flex;
     justify-content: space-between;
+    gap: 0.5em;
     width: 80%;
 }
 
 #inputs input {
-    width: 25%;
+    flex: 1;
     font-size: 16px;
+    font-family: Verdana, sans-serif;
+    height: 44px;
+    padding: 0 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+#inputs input:hover {
+    border-color: #0d6efd;
+}
+
+#inputs input:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 1px;
+    border-color: #0d6efd;
 }
 
 #inputs button {
-    width: 25%;
+    flex-shrink: 0;
 }
 
 #search-btn {
-    border: 1px solid black;
-    padding: 0.75em;
+    border: 1px solid #0d6efd;
+    padding: 0 1.25em;
     cursor: pointer;
     background-color: #0d6efd;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
+    height: 44px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: Verdana, sans-serif;
 }
 
 .default-bg-img {
@@ -131,9 +156,29 @@ body {
 
 #settings summary {
     cursor: pointer;
-    color: #555;
-    padding: 0.4em 0;
+    color: #444;
+    padding: 0.4em 0.6em;
     user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    border-radius: 6px;
+    font-weight: bold;
+    list-style: none;
+}
+
+#settings summary::-webkit-details-marker { display: none; }
+
+#settings summary::after {
+    content: '▼';
+    font-size: 10px;
+    color: #888;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+#settings[open] summary::after {
+    transform: rotate(180deg);
 }
 
 #settings summary:hover {
@@ -141,30 +186,66 @@ body {
 }
 
 #cpp-inputs {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.75em;
-    margin-top: 0.75em;
+    margin-top: 0.5em;
     padding: 1em;
-    background-color: rgb(148, 148, 148);
+    background-color: #f0f3fa;
     border-radius: 8px;
+    border: 1px solid #d0d7e8;
+    opacity: 0.9;
 }
 
 #cpp-inputs label {
     display: flex;
     flex-direction: column;
-    gap: 0.25em;
-    color: white;
+    gap: 0.3em;
+    color: #333;
     font-size: 11px;
 }
 
+.cpp-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+}
+
+.cpp-unit {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+}
+
 #cpp-inputs input {
-    width: 70px;
+    width: 60px;
     padding: 0.3em 0.5em;
     font-size: 13px;
     border: 1px solid #ccc;
     border-radius: 4px;
     text-align: center;
+    font-family: Verdana, sans-serif;
+}
+
+#cpp-inputs input:hover {
+    border-color: #0d6efd;
+}
+
+#cpp-inputs input:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 1px;
+    border-color: #0d6efd;
+}
+
+.cpp-divider {
+    grid-column: 1 / -1;
+    border: none;
+    border-top: 1px solid #d0d7e8;
+    margin: 0.25em 0;
+}
+
+.cpp-cashback-label {
+    grid-column: 1 / -1;
 }
 
 #airlines {

@@ -2,7 +2,7 @@
 
 // Data stuff and customization
 const data = {
-    cpp: {"KE":1.7,"UA":1.3,"AS":1.3,"AA":1.4,"B6":1.3,"CX":1.3},
+    cpp: {"KE":1.5,"UA":1.2,"AS":1.3,"AA":1.4,"B6":1.3,"CX":1.3},
     korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269},
     cathay_miles: {"CAN":300,"TPE":300,"CKG":300,"SZX":300,"ICN":800,"HND":800,"NRT":800,"SIN":800,"KUL":800,"PVG":800,"SHA":800,"PKX":800,"PEK":800,"KIX":800,"LAX":2500,"SFO":2500,"SEA":2500,"ORD":3000,"IAD":3000,"JFK":3000,"DFW":3000,"BOS":3000},
     cashback: 3,  // percent cash back from credit card
@@ -17,6 +17,11 @@ const get_curr_loc_btn = document.getElementById('get-curr-loc-btn')
 const start_input = document.getElementById('start')
 const end_input = document.getElementById('end')
 const date_input = document.getElementById('date')
+flatpickr(date_input, {
+    dateFormat: 'Y-m-d',
+    minDate: 'today',
+    disableMobile: true,
+})
 const search_btn = document.getElementById('search-btn')
 const results = document.getElementById('results')
 const airlines = document.getElementById('airlines')
