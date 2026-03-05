@@ -21,20 +21,17 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 - The "Extra Cost/Hour" stat is only for comparing a more expensive and shorter flight than the ticket with the cheapest base ticket price. If a flight both costs more and takes longer, this will show as $0 extra cost per hour (be careful to avoid!)
 - Please use your own API key, as the free tier is limited to 250 calls per month
 - To save on number of API calls, the search will return all flights for that destination, and all filtering is done on frontend
-- **To add more airlines:** Go to the data object in `script.js` and adding IATA code to the `include_airlines` string, as well as adding the HTML component if you want to add filter functionality for the newly added airline
+- **To add more airlines:** Go to the `data` object in `script.js` and adding IATA code to the `include_airlines` string. If you want to add filter functionality for that newly added airline, go to `index.html`, and check the "airlines" div. Add the airline, following the HTML format. There is no JavaScript needed to be modified, since the script will automatically add filter functionality for that new airline based on the IATA name.
 
 **Points:**
-- As of March 2026, miles can no longer be earned when flying basic economy on U.S. airlines (except Alaska and JetBlue). For this reason, the points earned portion of the calculation has become mostly negligible for now (until manual points are introduced to this app later).
-- However, Korean Air and Cathay points earned should still be fairly accurate.
-- More customization options coming soon
-- Default currency values are listed in the `data` object. However, they can now be modified in the frontend.
+- As of March 2026, miles can no longer be earned when flying basic economy on U.S. airlines (except Alaska and JetBlue). For this reason, **the points earned portion of the calculation has become mostly negligible for now** (until manual points are introduced to this app later).
+- Korean Air and Cathay Pacific points earned should still be fairly accurate, since they used fixed award charts (hard-coded in this app).
+- Default point values are listed in the `data` object. However, they can now be modified in the frontend via "Point Values".
 - If there are multiple flights on partner airlines, this will have the most inaccuracy. It just assumes the starting airline is the currency you will accumulate (for example, Alaska -> Air Premia assumes all points accured will be Alaska, even if it is not within same alliance)
-- Miles flown is not entirely correct, because each airline counts miles slightly differently. The Korean miles one is accurate because there is an object specific for how Korean Air counts mileage, but the others are rough estimates.
 - It is assumed points will be occured in lowest realistic booking class. For example, assuming every flight on Air Canada earns 50% miles. In reality, this will vary differently by flight, but there was no way to scrape booking class, so there are only estimates.
-- Most airlines have 0 accural, even within airline alliance, because most points don't transfer. For example, China Airlines is in same alliance as Korean Air, but Korean Air often doesn't count points earned on China Airlines flights.
 - But some will have accural, like United will count almost all Air Canada flights with 50% mile flown.
 
 **Next Steps:**
 - Flying out of Gimpo Airport with Korean Air will break the points calculation at the moment (due to Korean Air miles calculations assuming Incheon Airport is the start/layover/end). Working to include Gimpo Airport next.
 - Currently working to let users manually input miles earned for more accurate calculations.
-- More Working to support more airlines without cluttering the UI.
+- Trying to figure out a way to support more airlines without cluttering the UI. The ones listed are the ones I personally fly on, so feel free to customize with the instructions listed above.
