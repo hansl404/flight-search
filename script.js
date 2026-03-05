@@ -11,6 +11,7 @@ const data = {
 
 // let result = mock  // store result of API call here once to minimize calls
 let result = {}
+const distCache = {}
 
 const get_curr_loc_btn = document.getElementById('get-curr-loc-btn')
 const start_input = document.getElementById('start')
@@ -22,6 +23,25 @@ const airlines = document.getElementById('airlines')
 const airline_buttons = document.querySelectorAll('#airlines button')
 const bigbutton = document.getElementById('bigbutton')
 const bigbuttonmsg = document.getElementById('bigbuttonmsg')
+
+// initialize CPP and cashback inputs from data, and sync changes back
+const cppKeys = Object.keys(data.cpp)
+cppKeys.forEach(key => {
+    const input = document.getElementById(`cpp-${key}`)
+    if (input) {
+        input.value = data.cpp[key]
+        input.addEventListener('input', () => {
+            const val = parseFloat(input.value)
+            if (!isNaN(val) && val >= 0) data.cpp[key] = val
+        })
+    }
+})
+const cashbackInput = document.getElementById('cashback-input')
+cashbackInput.value = data.cashback
+cashbackInput.addEventListener('input', () => {
+    const val = parseFloat(cashbackInput.value)
+    if (!isNaN(val) && val >= 0) data.cashback = val
+})
 
 const highlighted = {}
 airline_buttons.forEach(button => {
@@ -162,6 +182,62 @@ function pointData(airline,start,end,price,miles=0) {
     return {points, points_val}
 }
 
+// pre-fetch distances for all legs in parallel, then compute true cost and cost_per_hr for every flight
+async function precomputeAllFlights(flights) {
+    // collect unique airport pairs across all legs
+    const pairs = new Set()
+    for (const flight of flights) {
+        for (const leg of flight.flights) {
+            const key = [leg.departure_airport.id, leg.arrival_airport.id].sort().join('-')
+            pairs.add(key)
+        }
+    }
+
+    // fetch all distances in parallel, caching results
+    await Promise.all([...pairs].map(async (key) => {
+        if (distCache[key] === undefined) {
+            const [a, b] = key.split('-')
+            distCache[key] = await getDist(a, b) || 0
+        }
+    }))
+
+    // compute true cost for each flight
+    for (const flight of flights) {
+        let dist_flown = 0
+        for (const leg of flight.flights) {
+            const key = [leg.departure_airport.id, leg.arrival_airport.id].sort().join('-')
+            dist_flown += distCache[key] || 0
+        }
+        const { points, points_val } = pointData(
+            flight.flights[0].airline,
+            flight.flights[0].departure_airport.id,
+            flight.flights[flight.flights.length - 1].arrival_airport.id,
+            flight.price,
+            dist_flown
+        )
+        const true_cost = parseFloat((flight.price * (1 - data.cashback / 100)) - points_val / 100)
+        flight._computed = { dist_flown, points, points_val, true_cost }
+    }
+
+    // find the flight with the lowest true cost to use as the baseline
+    const cheapest = flights.reduce((min, f) =>
+        f._computed.true_cost < min._computed.true_cost ? f : min
+    )
+    const cheapest_true_cost = cheapest._computed.true_cost
+    const cheapest_duration = cheapest.total_duration
+
+    // compute extra cost per hour saved vs the cheapest true-cost flight
+    for (const flight of flights) {
+        const cost_diff = flight._computed.true_cost - cheapest_true_cost
+        const time_diff_hrs = (cheapest_duration - flight.total_duration) / 60
+        let cost_per_hr = 0
+        if (cost_diff > 0 && time_diff_hrs > 0) {
+            cost_per_hr = parseFloat((cost_diff / time_diff_hrs).toFixed(2))
+        }
+        flight._computed.cost_per_hr = cost_per_hr
+    }
+}
+
 // create the popup
 async function openPopup(flight) {
 
@@ -188,7 +264,6 @@ async function openPopup(flight) {
     if (flight.layovers) {
         layovers = flight.layovers
     }
-    let dist_flown = 0
 
     let stats_title = document.createElement('div')
     let stats_points = document.createElement('div')
@@ -209,7 +284,7 @@ async function openPopup(flight) {
         flight_stats.arrive_time = leg.arrival_airport.time.split(" ")[1]
         flight_stats.duration = Math.floor(leg.duration/60) + ' hours ' + leg.duration % 60 + ' min'
         flight_stats.logo = leg.airline_logo
-        let layoverString = '' 
+        let layoverString = ''
         if (layovers && i < layovers.length) {
             let layoverAirport = layovers[i].name
             let layoverTime = Math.floor(layovers[i].duration/60) + ' hours ' + layovers[i].duration%60 + ' min'
@@ -223,34 +298,15 @@ async function openPopup(flight) {
         itineraryItem.appendChild(itineraryItemLogo)
         itineraryItem.appendChild(itineraryItemText)
         itinerary.appendChild(itineraryItem)
-        
+
         layoverItem = document.createElement('div')
         layoverItem.classList.add('layover-item')
         layoverItem.innerHTML = layoverString
         itinerary.appendChild(layoverItem)
-
-        let miles = await getDist(leg.departure_airport.id,leg.arrival_airport.id)
-        // console.log(miles)
-        dist_flown += miles
     }
 
-    // population of data dependent on points/dist
-    // console.log(dist_flown)
-    let {points, points_val} = pointData(flight.flights[0].airline, flight.flights[0].departure_airport.id, flight.flights[flight.flights.length-1].arrival_airport.id, flight.price,dist_flown)
-    let true_cost = parseFloat((flight.price*(1-data.cashback/100)) - points_val/100).toFixed(2)
-    if (true_cost < data.cheapest_price) {
-      data.cheapest_price = parseFloat(true_cost).toFixed(2)
-      console.log(data)
-    }
-    let cost_diff_from_cheapest = true_cost - data.cheapest_price
-    let time_diff_from_cheapest = (data.cheapest_duration - flight.total_duration)/60
-    let cost_per_hr = parseFloat(cost_diff_from_cheapest / time_diff_from_cheapest).toFixed(2)
-    if (true_cost == data.cheapest_price || true_cost == Infinity || data.cheapest_price > true_cost) {
-      cost_per_hr = 0
-    }
-    
-    console.log('true cost of this flight ' + true_cost)
-    console.log('cheapest flight true cost ' + data.cheapest_price)
+    // use precomputed data
+    const { dist_flown, points, points_val, true_cost, cost_per_hr } = flight._computed
 
     title.appendChild(logo)
     let titleText = document.createElement('div')
@@ -332,9 +388,9 @@ const search = async() => {
             start = '/m/01914'
         } else if (start == 'CHI' || start == 'CHICAGO') {
             start = '/m/01_d4'
-        } else if (start == 'Shanghai') {
+        } else if (start == 'SHANGHAI') {
             start = '/m/06wjf'
-        } else if (start == 'Taipei') {
+        } else if (start == 'TAIPEI') {
             start = '/m/0ftkx'
         }
 
@@ -350,9 +406,9 @@ const search = async() => {
             end = '/m/01914'
         } else if (end == 'CHI' || end == 'CHICAGO') {
             end = '/m/01_d4'
-        } else if (end == 'Shanghai') {
+        } else if (end == 'SHANGHAI') {
             end = '/m/06wjf'
-        } else if (end == 'Taipei') {
+        } else if (end == 'TAIPEI') {
             end = '/m/0ftkx'
         }
         console.log(start)
@@ -374,7 +430,9 @@ const search = async() => {
             console.log(data)
             result = data
             console.log(result)
-            
+
+            results.innerHTML = 'Computing savings...'
+            await precomputeAllFlights(result.other_flights)
             generateList(result)
         } catch (error) {
             console.error('Search failed')
@@ -411,9 +469,6 @@ generateList = (flightdata) => {
     results.innerHTML = ''
     console.log(flightdata.other_flights[0])
 
-    data.cheapest_duration = flightdata.other_flights[0].total_duration
-    data.cheapest_price = flightdata.other_flights[0].price
-    console.log(data)
     let search_info = document.createElement('div')
     let area_dept = flightdata.search_parameters.departure_id
     let area_arr = flightdata.search_parameters.arrival_id
@@ -445,6 +500,17 @@ generateList = (flightdata) => {
 
         let price = document.createElement('div')
         price.innerHTML = `$${flight.price}`
+
+        // let cost_per_hr_div = document.createElement('div')
+        // if (flight._computed) {
+        //     const { true_cost, cost_per_hr } = flight._computed
+        //     if (cost_per_hr === 0) {
+        //         cost_per_hr_div.innerHTML = `True: $${true_cost.toFixed(2)} — Cheapest`
+        //         cost_per_hr_div.style.color = '#228b22'
+        //     } else {
+        //         cost_per_hr_div.innerHTML = `True: $${true_cost.toFixed(2)} — $${cost_per_hr}/hr saved`
+        //     }
+        // }
 
         let times = document.createElement('div')
         let starttime = flight.flights[0].departure_airport.time
@@ -482,6 +548,7 @@ generateList = (flightdata) => {
         flight_container.appendChild(logo)
         flight_container.appendChild(airlines)
         flight_container.appendChild(price)
+        // flight_container.appendChild(cost_per_hr_div)
         flight_container.appendChild(times)
         flight_container.appendChild(duration)
         flight_container.appendChild(layovers)
