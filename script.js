@@ -3,7 +3,7 @@
 // Data stuff and customization
 const data = {
     cpp: {"KE":1.5,"UA":1.2,"AS":1.3,"AA":1.4,"B6":1.3,"CX":1.3},
-    korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269},
+    korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"KUL":2867,"BKK":2286,"SGN":2223,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269,"TAO":370},
     cathay_miles: {"CAN":300,"TPE":300,"CKG":300,"SZX":300,"ICN":800,"HND":800,"NRT":800,"SIN":800,"KUL":800,"PVG":800,"SHA":800,"PKX":800,"PEK":800,"KIX":800,"LAX":2500,"SFO":2500,"SEA":2500,"ORD":3000,"IAD":3000,"JFK":3000,"DFW":3000,"BOS":3000},
     cashback: 3,  // percent cash back from credit card
     include_airlines: "KE,OZ,YP,DL,UA,AA,AS,HA,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,NK,F9"
@@ -35,7 +35,7 @@ cppKeys.forEach(key => {
     const input = document.getElementById(`cpp-${key}`)
     if (input) {
         input.value = data.cpp[key]
-        input.addEventListener('input', () => {
+        input.addEventListener('sl-input', () => {
             const val = parseFloat(input.value)
             if (!isNaN(val) && val >= 0) data.cpp[key] = val
         })
@@ -43,7 +43,7 @@ cppKeys.forEach(key => {
 })
 const cashbackInput = document.getElementById('cashback-input')
 cashbackInput.value = data.cashback
-cashbackInput.addEventListener('input', () => {
+cashbackInput.addEventListener('sl-input', () => {
     const val = parseFloat(cashbackInput.value)
     if (!isNaN(val) && val >= 0) data.cashback = val
 })
@@ -447,6 +447,10 @@ const search = async() => {
 
 bigbutton.addEventListener('click', search)
 search_btn.addEventListener('click', search)
+
+const settingsDialog = document.getElementById('settings-dialog')
+document.getElementById('settings-btn').addEventListener('click', () => settingsDialog.show())
+document.getElementById('settings-close').addEventListener('click', () => settingsDialog.hide())
 
 let getAreaCode = (input) => {
     if (input == '/m/02_286') {

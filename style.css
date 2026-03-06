@@ -147,94 +147,43 @@ body {
     /* color: white; */
 }
 
-#settings {
-    width: 80%;
+#settings-btn {
     margin-top: 1em;
+    padding: 0.4em 1em;
     font-family: Verdana, sans-serif;
     font-size: 13px;
-}
-
-#settings summary {
-    cursor: pointer;
-    color: #444;
-    padding: 0.4em 0.6em;
-    user-select: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4em;
-    border-radius: 6px;
     font-weight: bold;
-    list-style: none;
+    color: #444;
+    background: #f0f3fa;
+    border: 1px solid #d0d7e8;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-left: 10%;
 }
 
-#settings summary::-webkit-details-marker { display: none; }
-
-#settings summary::after {
-    content: '▼';
-    font-size: 10px;
-    color: #888;
-    transition: transform 0.2s;
-    display: inline-block;
-}
-
-#settings[open] summary::after {
-    transform: rotate(180deg);
-}
-
-#settings summary:hover {
+#settings-btn:hover {
     color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+sl-dialog {
+    --width: 620px;
 }
 
 #cpp-inputs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.75em;
-    margin-top: 0.5em;
-    padding: 1em;
-    background-color: #f0f3fa;
-    border-radius: 8px;
-    border: 1px solid #d0d7e8;
-    opacity: 0.9;
 }
 
-#cpp-inputs label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3em;
-    color: #333;
-    font-size: 11px;
-}
-
-.cpp-input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.3em;
-}
-
-.cpp-unit {
-    font-size: 11px;
-    color: #666;
-    white-space: nowrap;
-}
-
-#cpp-inputs input {
-    width: 60px;
-    padding: 0.3em 0.5em;
-    font-size: 13px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
-    font-family: Verdana, sans-serif;
-}
-
-#cpp-inputs input:hover {
-    border-color: #0d6efd;
-}
-
-#cpp-inputs input:focus {
-    outline: 2px solid #0d6efd;
-    outline-offset: 1px;
-    border-color: #0d6efd;
+#cpp-inputs sl-input {
+    min-width: 0;
+    --sl-input-font-family: Verdana, sans-serif;
+    --sl-input-font-size-small: 13px;
+    --sl-input-label-font-size-small: 11px;
+    --sl-focus-ring-color: #0d6efd40;
+    --sl-color-primary-600: #0d6efd;
 }
 
 .cpp-divider {
