@@ -145,7 +145,7 @@ function pointData(airline,start,end,price,miles=0) {
     let points_val = 0
     if (airline == 'Korean Air' || airline == 'Asiana Airlines') {  // Asiana exists until merger
         if (start != 'ICN' && end != 'ICN') {  // layover in Seoul
-            points = data.korean_miles[start] + data.korean_miles[end]
+            points = (data.korean_miles[start] || 0) + (data.korean_miles[end] || 0)
         } else if (end == 'ICN' && start in data.korean_miles) {   // ? -> ICN
             points = data.korean_miles[start]
         } else if (start == 'ICN' && end in data.korean_miles) {  // ICN -> ?
@@ -171,7 +171,7 @@ function pointData(airline,start,end,price,miles=0) {
         points_val = points * data.cpp.AA
     } else if (airline == 'Cathay Pacific') {
         if (start != 'HKG' && end != 'HKG') {  // layover in HK
-            points = data.cathay_miles[start] + data.cathay_miles[end]
+            points = (data.cathay_miles[start] || 0) + (data.cathay_miles[end] || 0)
         } else if (end == 'HKG' && start in data.cathay_miles) {   // ? -> HKG
             points = data.cathay_miles[start]
         } else if (start == 'HKG' && end in data.cathay_miles) {  // HKG -> ?
@@ -320,24 +320,29 @@ async function openPopup(flight) {
     title.appendChild(titleText)
 
     stats_title.innerHTML = 'Stats'
-    stats_title.setAttribute('style', 'font-size: 24px;')
-    stats_title.setAttribute('style', 'margin-bottom: 1em;')
+    stats_title.classList.add('stats-title')
+
+    stats_dist_flown.classList.add('stat-item')
+    stats_dist_flown.innerHTML = `<span class="stat-label">Miles Flown</span><span class="stat-value">${dist_flown}</span>`
+
+    stats_points.classList.add('stat-item')
+    stats_points.innerHTML = `<span class="stat-label">Points Earned</span><span class="stat-value">${parseInt(points)}</span>`
+
+    stats_points_value.classList.add('stat-item')
+    stats_points_value.innerHTML = `<span class="stat-label">Points Value</span><span class="stat-value">$${parseInt(points_val/100)}</span>`
+
+    stats_true_cost.classList.add('stat-item')
+    stats_true_cost.innerHTML = `<span class="stat-label">True Cost</span><span class="stat-value">$${parseFloat(true_cost).toFixed(2)}</span>`
+
+    stats_cost_per_hr.classList.add('stat-item')
+    const cphrColor = cost_per_hr < 0 ? '#f85149' : '#e6edf3'
+    stats_cost_per_hr.innerHTML = `<span class="stat-label">Extra Cost/Hour</span><span class="stat-value" style="color:${cphrColor}">$${cost_per_hr}</span>`
+
     stats.appendChild(stats_title)
     stats.appendChild(stats_dist_flown)
-    stats_dist_flown.innerHTML = `Miles Flown: ${dist_flown}`
-    stats_points.innerHTML = `Points Earned: ${parseInt(points)}`
     stats.appendChild(stats_points)
-    stats_points_value.innerHTML = `Points Value: $${parseInt(points_val/100)}`
     stats.appendChild(stats_points_value)
-    stats_true_cost.innerHTML = `True Cost: $${parseFloat(true_cost).toFixed(2)}`
     stats.appendChild(stats_true_cost)
-    if (cost_per_hr < 0) {
-      stats_cost_per_hr.innerHTML = `Extra Cost/Hour: $${cost_per_hr}`
-      stats_cost_per_hr.style.color = 'red'
-    } else {
-      stats_cost_per_hr.innerHTML = `Extra Cost/Hour: $${cost_per_hr}`
-    }
-    // stats_cost_per_hr.innerHTML = `Extra Cost/Hour: $${cost_per_hr}`
     stats.appendChild(stats_cost_per_hr)
     stats.classList.add('stats')
 
