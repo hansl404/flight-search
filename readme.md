@@ -13,15 +13,13 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 - Get API key at https://serpapi.com/ and put the key into the environment variables on Vercel before deploying
 - Customize airlines, airports, point values, credit card cashback in the `data` object of the `script.js` file.
 - To test locally, need to create a `server.js` file for proxy
+- **To add more airlines:** Go to the `data` object in `script.js` and adding IATA code to the `include_airlines` string. If you want to add filter functionality for that newly added airline, go to `index.html`, and check the "airlines" div. Add the airline, following the HTML format. There is no JavaScript needed to be modified, since the script will automatically add filter functionality for that new airline based on the IATA name.
 
 **Notes:**
 - Flights are all one-way for now
 - Flight prices are all for economy class (or basic economy), and sorted in order of cheapest ticket price first (not the "true" cost which is calculated later)
 - Don't recommend including Chinese airlines because this uses Google Flights API, and Chinese airlines should be booked through trip.com, not Google Flights
-- The "Extra Cost/Hour" stat is only for comparing a more expensive and shorter flight than the ticket with the cheapest base ticket price. If a flight both costs more and takes longer, this will show as $0 extra cost per hour (be careful to avoid!)
-- Please use your own API key, as the free tier is limited to 250 calls per month
-- To save on number of API calls, the search will return all flights for that destination, and all filtering is done on frontend
-- **To add more airlines:** Go to the `data` object in `script.js` and adding IATA code to the `include_airlines` string. If you want to add filter functionality for that newly added airline, go to `index.html`, and check the "airlines" div. Add the airline, following the HTML format. There is no JavaScript needed to be modified, since the script will automatically add filter functionality for that new airline based on the IATA name.
+- The "Extra Cost/Hour" stat is only for comparing a more expensive and shorter flight than the ticket with the cheapest base ticket price. **Warning:** If a flight both costs more and takes longer, this will show as $0 extra cost per hour
 
 **Points:**
 - As of March 2026, miles can no longer be earned when flying basic economy on U.S. airlines (except Alaska and JetBlue). For this reason, **the points earned portion of the calculation has become mostly negligible for now** (until manual points are introduced to this app later).
@@ -33,5 +31,5 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 
 **Next Steps:**
 - Flying out of Gimpo Airport with Korean Air will break the points calculation at the moment (due to Korean Air miles calculations assuming Incheon Airport is the start/layover/end). Working to include Gimpo Airport next.
-- Currently working to let users manually input miles earned for more accurate calculations.
+- Currently working to let users manually input miles earned
 - Trying to figure out a way to support more airlines without cluttering the UI. The ones listed are the ones I personally fly on, so feel free to customize with the instructions listed above.
