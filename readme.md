@@ -2,11 +2,11 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 
 [View Deployed App Prototype](https://clearcost.vercel.app/)
 
-<img width="1778" alt="Image" src="https://github.com/user-attachments/assets/9083e30e-50f1-40c3-940f-fdc0d8022037" />
+<img width="1497" height="754" alt="Image" src="https://github.com/user-attachments/assets/7a2867f2-d1e1-4feb-84b0-e76e07a5da06" />
 
-<img width="1757" alt="Image" src="https://github.com/user-attachments/assets/cf41ce1a-5601-47ec-87e4-5922c242280a" />
+<img width="1505" height="760" alt="Image" src="https://github.com/user-attachments/assets/29fc83c0-911e-4153-bec9-481723a162ed" />
 
-<img width="1754" alt="Image" src="https://github.com/user-attachments/assets/81bcb66b-9c4e-45eb-9832-9a913d87bd33" />
+<img width="1499" height="759" alt="Image" src="https://github.com/user-attachments/assets/c499fa55-f3f3-49f4-b106-f8cb7b969c8f" />
 
 **How to Customize:**
 - Fork this repo
