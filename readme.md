@@ -17,12 +17,13 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 
 **Notes:**
 - Flights are all one-way for now
+- Only the following points are supported for now: Korean Air, Cathay Pacific, Delta Airlines, United Airlines, American Airlines, Alaska Airlines
 - Flight prices are all for economy class (or basic economy), and sorted in order of cheapest ticket price first (not the "true" cost which is calculated later)
 - Don't recommend including Chinese airlines because this uses Google Flights API, and Chinese airlines should be booked through trip.com, not Google Flights
 - The "Extra Cost/Hour" stat is only for comparing a more expensive and shorter flight than the ticket with the cheapest base ticket price. **Warning:** If a flight both costs more and takes longer, this will show as $0 extra cost per hour
 
 **Points:**
-- As of March 2026, miles can no longer be earned when flying basic economy on U.S. airlines (except Alaska and JetBlue). For this reason, **the points earned portion of the calculation has become mostly negligible for now** (until manual points are introduced to this app later).
+- Point calculations are merely estimations, so could it be inaccurate. Most of the time, it will assume 0 points earned (because the fares displayed are basic economy). However, you can manually input miles earned, along with the mileage program (among the 6 supported airline currencies), to get a different "true cost" calculation.
 - Korean Air and Cathay Pacific points earned should still be fairly accurate, since they used fixed award charts (hard-coded in this app).
 - Default point values are listed in the `data` object. However, they can now be modified in the frontend via "Point Values".
 - If there are multiple flights on partner airlines, this will have the most inaccuracy. It just assumes the starting airline is the currency you will accumulate (for example, Alaska -> Air Premia assumes all points accured will be Alaska, even if it is not within same alliance)
@@ -31,5 +32,4 @@ Clearcost Flights - A customizable flight search that scrapes the Google Flights
 
 **Next Steps:**
 - Flying out of Gimpo Airport with Korean Air will break the points calculation at the moment (due to Korean Air miles calculations assuming Incheon Airport is the start/layover/end). Working to include Gimpo Airport next.
-- Currently working to let users manually input miles earned
 - Trying to figure out a way to support more airlines without cluttering the UI. The ones listed are the ones I personally fly on, so feel free to customize with the instructions listed above.
