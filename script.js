@@ -6,7 +6,7 @@ const data = {
     korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"KUL":2867,"BKK":2286,"SGN":2223,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269,"TAO":370},
     cathay_miles: {"CAN":300,"TPE":300,"CKG":300,"SZX":300,"ICN":800,"HND":800,"NRT":800,"SIN":800,"KUL":800,"PVG":800,"SHA":800,"PKX":800,"PEK":800,"KIX":800,"LAX":2500,"SFO":2500,"SEA":2500,"ORD":3000,"IAD":3000,"JFK":3000,"DFW":3000,"BOS":3000},
     cashback: 3,  // percent cash back from credit card
-    include_airlines: "KE,OZ,YP,DL,UA,AA,AS,HA,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,NK,F9"
+    include_airlines: "KE,OZ,YP,DL,UA,AA,AS,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,NK,F9"
 }
 
 // let result = mock  // store result of API call here once to minimize calls
@@ -325,8 +325,32 @@ async function openPopup(flight) {
     stats_dist_flown.classList.add('stat-item')
     stats_dist_flown.innerHTML = `<span class="stat-label">Miles Flown</span><span class="stat-value">${dist_flown}</span>`
 
+    // Determine allowed mileage programs based on operating airline
+    const operatingAirline = flight.flights[0].airline
+    const programLabels = { KE: 'SkyPass (KE)', UA: 'MileagePlus (UA)', AS: 'Mileage Plan (AS)', AA: 'AAdvantage (AA)', CX: 'Asia Miles (CX)' }
+    const getAllowedPrograms = (airline) => {
+        if (/EVA|United|Air Canada|ANA|All Nippon|Singapore/.test(airline)) return ['UA']
+        if (/Korean Air|Asiana|Delta|China Airlines|Vietnam/.test(airline)) return ['KE']
+        if (/American|Japan Airlines|JAL|Alaska|Cathay/.test(airline)) return ['AA', 'AS', 'CX']
+        return []
+    }
+    const allowedPrograms = getAllowedPrograms(operatingAirline)
+
     stats_points.classList.add('stat-item')
-    stats_points.innerHTML = `<span class="stat-label">Points Earned</span><span class="stat-value">${parseInt(points)}</span>`
+    if (allowedPrograms.length > 0) {
+        const programHTML = allowedPrograms.length > 1
+            ? `<select class="stat-points-program">${allowedPrograms.map(p => `<option value="${p}">${programLabels[p]}</option>`).join('')}</select>`
+            : `<span class="stat-points-program-fixed">${programLabels[allowedPrograms[0]]}</span>`
+        stats_points.innerHTML = `
+            <span class="stat-label">Points Earned</span>
+            <div class="stat-points-row">
+                <input type="number" class="stat-points-input" value="${parseInt(points)}" min="0">
+                <button class="stat-points-reset">✕</button>
+            </div>
+            ${programHTML}`
+    } else {
+        stats_points.innerHTML = `<span class="stat-label">Points Earned</span><span class="stat-value">0</span>`
+    }
 
     stats_points_value.classList.add('stat-item')
     stats_points_value.innerHTML = `<span class="stat-label">Points Value</span><span class="stat-value">$${parseInt(points_val/100)}</span>`
@@ -345,6 +369,28 @@ async function openPopup(flight) {
     stats.appendChild(stats_true_cost)
     stats.appendChild(stats_cost_per_hr)
     stats.classList.add('stats')
+
+    // Wire up live recalculation for custom points input
+    if (allowedPrograms.length > 0) {
+        const pointsInput = stats_points.querySelector('.stat-points-input')
+        const programSelect = stats_points.querySelector('.stat-points-program')
+        const resetBtn = stats_points.querySelector('.stat-points-reset')
+
+        const recalculate = () => {
+            const customPoints = parseFloat(pointsInput.value) || 0
+            const selectedProgram = programSelect ? programSelect.value : allowedPrograms[0]
+            const newPointsVal = customPoints * data.cpp[selectedProgram]
+            const newTrueCost = parseFloat((flight.price * (1 - data.cashback / 100)) - newPointsVal / 100)
+            stats_points_value.querySelector('.stat-value').textContent = `$${parseInt(newPointsVal / 100)}`
+            stats_true_cost.querySelector('.stat-value').textContent = `$${newTrueCost.toFixed(2)}`
+            flight._computed.true_cost = newTrueCost
+            flight._computed.points_val = newPointsVal
+        }
+
+        pointsInput.addEventListener('input', recalculate)
+        if (programSelect) programSelect.addEventListener('change', recalculate)
+        resetBtn.addEventListener('click', () => { pointsInput.value = 0; recalculate() })
+    }
 
 
     popupBox.classList.add("popup-box");
