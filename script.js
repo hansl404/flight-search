@@ -6,7 +6,7 @@ const data = {
     korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"KUL":2867,"BKK":2286,"SGN":2223,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269,"TAO":370},
     cathay_miles: {"CAN":300,"TPE":300,"CKG":300,"SZX":300,"ICN":800,"HND":800,"NRT":800,"SIN":800,"KUL":800,"PVG":800,"SHA":800,"PKX":800,"PEK":800,"KIX":800,"LAX":2500,"SFO":2500,"SEA":2500,"ORD":3000,"IAD":3000,"JFK":3000,"DFW":3000,"BOS":3000},
     cashback: 3,  // percent cash back from credit card
-    include_airlines: "KE,OZ,YP,DL,UA,AA,AS,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,NK,F9"
+    include_airlines: "KE,OZ,YP,DL,UA,AA,AS,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,F9"
 }
 
 // let result = mock  // store result of API call here once to minimize calls
@@ -144,12 +144,15 @@ function pointData(airline,start,end,price,miles=0) {
     let points = 0  // points earned (not counting which airline yet)
     let points_val = 0
     if (airline == 'Korean Air' || airline == 'Asiana Airlines') {  // Asiana exists until merger
-        if (start != 'ICN' && end != 'ICN') {  // layover in Seoul
-            points = (data.korean_miles[start] || 0) + (data.korean_miles[end] || 0)
-        } else if (end == 'ICN' && start in data.korean_miles) {   // ? -> ICN
-            points = data.korean_miles[start]
-        } else if (start == 'ICN' && end in data.korean_miles) {  // ICN -> ?
-            points = data.korean_miles[end]
+        const seoulAirports = ['ICN', 'GMP']
+        const normStart = seoulAirports.includes(start) ? 'ICN' : start
+        const normEnd = seoulAirports.includes(end) ? 'ICN' : end
+        if (normStart != 'ICN' && normEnd != 'ICN') {  // layover in Seoul
+            points = (data.korean_miles[normStart] || 0) + (data.korean_miles[normEnd] || 0)
+        } else if (normEnd == 'ICN' && normStart in data.korean_miles) {   // ? -> ICN/GMP
+            points = data.korean_miles[normStart]
+        } else if (normStart == 'ICN' && normEnd in data.korean_miles) {  // ICN/GMP -> ?
+            points = data.korean_miles[normEnd]
         } else {
             points = 0
         }
@@ -310,8 +313,21 @@ async function openPopup(flight) {
         itinerary.appendChild(layoverItem)
     }
 
-    // use precomputed data
-    const { dist_flown, points, points_val, true_cost, cost_per_hr } = flight._computed
+    // recalculate using current cpp values in case user changed them since search
+    const { dist_flown, cost_per_hr } = flight._computed
+    const freshPoint = pointData(
+        flight.flights[0].airline,
+        flight.flights[0].departure_airport.id,
+        flight.flights[flight.flights.length - 1].arrival_airport.id,
+        flight.price,
+        dist_flown
+    )
+    const points = freshPoint.points
+    const points_val = freshPoint.points_val
+    const true_cost = parseFloat((flight.price * (1 - data.cashback / 100)) - points_val / 100)
+    flight._computed.points = points
+    flight._computed.points_val = points_val
+    flight._computed.true_cost = true_cost
 
     title.appendChild(logo)
     let titleText = document.createElement('div')
