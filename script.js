@@ -13,6 +13,7 @@ const data = {
 let result = {}
 const distCache = {}
 
+const inputs = document.getElementById('inputs')
 const get_curr_loc_btn = document.getElementById('get-curr-loc-btn')
 const start_input = document.getElementById('start')
 const end_input = document.getElementById('end')
@@ -28,6 +29,7 @@ const airlines = document.getElementById('airlines')
 const airline_buttons = document.querySelectorAll('#airlines button')
 const bigbutton = document.getElementById('bigbutton')
 const bigbuttonmsg = document.getElementById('bigbuttonmsg')
+const settings_btn = document.getElementById('settings-btn')
 
 // initialize CPP and cashback inputs from data, and sync changes back
 const cppKeys = Object.keys(data.cpp)
@@ -490,6 +492,8 @@ const search = async() => {
         // getDist(start,end).then(dist => console.log(dist))
 
         bigbutton.style.display = 'none'
+        inputs.classList.add('has-settings')
+        inputs.appendChild(settings_btn)
         airlines.style.display = 'block'
         const url = `/api/fetch-flights?start=${start}&end=${end}&date=${date}&gl=${gl}&hl=${hl}&currency=${currency}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines_url}`
 
@@ -516,7 +520,7 @@ bigbutton.addEventListener('click', search)
 search_btn.addEventListener('click', search)
 
 const settingsDialog = document.getElementById('settings-dialog')
-document.getElementById('settings-btn').addEventListener('click', () => settingsDialog.show())
+settings_btn.addEventListener('click', () => settingsDialog.show())
 document.getElementById('settings-close').addEventListener('click', () => settingsDialog.hide())
 
 let getAreaCode = (input) => {
@@ -633,5 +637,4 @@ generateList = (flightdata) => {
     })
 
 }
-
 
