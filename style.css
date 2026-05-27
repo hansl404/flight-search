@@ -382,6 +382,7 @@ sl-dialog::part(title) {
 }
 
 .popup-box {
+    position: relative;
     background: #161b22;
     padding: 20px;
     border-radius: 10px;
@@ -394,6 +395,33 @@ sl-dialog::part(title) {
     color: #e6edf3;
     font-family: Verdana, sans-serif;
     font-size: 16px;
+}
+
+.popup-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #30363d;
+    border-radius: 999px;
+    background: #21262d;
+    color: #e6edf3;
+    cursor: pointer;
+    font-family: Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.popup-close:hover,
+.popup-close:focus {
+    border-color: #f85149;
+    color: #f85149;
+    outline: none;
 }
 
 .title {
@@ -757,14 +785,22 @@ sl-dialog::part(title) {
     }
 
     .popup-overlay {
-        align-items: stretch;
-        padding: 0.5rem;
+        align-items: center;
+        padding: 1rem;
     }
 
     .popup-box {
-        padding: 0.9em;
+        padding: 3.1em 0.9em 0.9em;
         font-size: 14px;
-        max-height: calc(100vh - 1rem);
+        width: min(92vw, 420px);
+        max-height: 82vh;
+    }
+
+    .popup-close {
+        top: 0.6rem;
+        right: 0.6rem;
+        width: 40px;
+        height: 40px;
     }
 
     .title {

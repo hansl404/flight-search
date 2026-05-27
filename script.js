@@ -257,6 +257,11 @@ async function openPopup(flight) {
 
     // Create popup box
     const popupBox = document.createElement("div");
+    const closeBtn = document.createElement("button");
+    closeBtn.classList.add("popup-close");
+    closeBtn.type = "button";
+    closeBtn.setAttribute("aria-label", "Close flight details");
+    closeBtn.textContent = "X";
 
     // top part
     const title = document.createElement('div')
@@ -412,6 +417,7 @@ async function openPopup(flight) {
 
 
     popupBox.classList.add("popup-box");
+    popupBox.appendChild(closeBtn);
     popupBox.appendChild(title);
     const box_content = document.createElement('div')
     box_content.classList.add('box-content')
@@ -429,6 +435,7 @@ async function openPopup(flight) {
 
     // Close popup when clicking outside the box
     overlay.addEventListener("click", () => overlay.remove());
+    closeBtn.addEventListener("click", () => overlay.remove());
 }
 
 const search = async() => {
@@ -637,4 +644,3 @@ generateList = (flightdata) => {
     })
 
 }
-
