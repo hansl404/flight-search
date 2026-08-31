@@ -6,7 +6,7 @@ const data = {
     korean_miles: {"JFK":6865,"DFW":6824,"SEA":5196,"LAX":5973,"ORD":6538,"BOS":6808,"ATL":7132,"HKG":1295,"TPE":914,"KUL":2867,"BKK":2286,"SGN":2223,"PVG":525,"SIN":2883,"NRT":758,"HND":758,"ITM":525,"KIX":525,"SZX":1281,"CAN":1269,"TAO":370},
     cathay_miles: {"CAN":300,"TPE":300,"CKG":300,"SZX":300,"ICN":800,"HND":800,"NRT":800,"SIN":800,"KUL":800,"PVG":800,"SHA":800,"PKX":800,"PEK":800,"KIX":800,"LAX":2500,"SFO":2500,"SEA":2500,"ORD":3000,"IAD":3000,"JFK":3000,"DFW":3000,"BOS":3000},
     cashback: 3,  // percent cash back from credit card
-    include_airlines: "KE,OZ,YP,DL,UA,AA,AS,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,F9"
+    include_airlines: "KE,OZ,YP,DL,UA,AA,AS,WN,AC,BR,CI,JX,CX,JL,NH,VN,SQ,TR,MM,TW,7C,LJ,B6,F9,ZG,MH,TG"
 }
 
 // let result = mock  // store result of API call here once to minimize calls
@@ -309,15 +309,24 @@ async function openPopup(flight) {
         itineraryItemLogo.src = flight_stats.logo
         itineraryItemLogo.classList.add('flight-logo')
         let itineraryItemText = document.createElement('div')
-        itineraryItemText.innerHTML = `${flight_stats.depart_time} (${flight_stats.start_airport}) - ${flight_stats.arrive_time} (${flight_stats.end_airport}) (${flight_stats.duration})`
+        itineraryItemText.classList.add('itinerary-copy')
+        let itineraryRoute = document.createElement('div')
+        itineraryRoute.textContent = `${flight_stats.depart_time} (${flight_stats.start_airport}) - ${flight_stats.arrive_time} (${flight_stats.end_airport}) (${flight_stats.duration})`
+        let itineraryPlane = document.createElement('div')
+        itineraryPlane.classList.add('aircraft-model')
+        itineraryPlane.textContent = leg.airplane || leg.aircraft || leg.aircraft_type || 'Aircraft model not listed'
+        itineraryItemText.appendChild(itineraryRoute)
+        itineraryItemText.appendChild(itineraryPlane)
         itineraryItem.appendChild(itineraryItemLogo)
         itineraryItem.appendChild(itineraryItemText)
         itinerary.appendChild(itineraryItem)
 
-        layoverItem = document.createElement('div')
-        layoverItem.classList.add('layover-item')
-        layoverItem.innerHTML = layoverString
-        itinerary.appendChild(layoverItem)
+        if (layoverString) {
+            let layoverItem = document.createElement('div')
+            layoverItem.classList.add('layover-item')
+            layoverItem.textContent = layoverString
+            itinerary.appendChild(layoverItem)
+        }
     }
 
     // recalculate using current cpp values in case user changed them since search
@@ -432,10 +441,33 @@ async function openPopup(flight) {
     // Append popup box to overlay
     overlay.appendChild(popupBox);
     document.body.appendChild(overlay);
+    requestAnimationFrame(fitLayoverText);
 
     // Close popup when clicking outside the box
     overlay.addEventListener("click", () => overlay.remove());
     closeBtn.addEventListener("click", () => overlay.remove());
+}
+
+const showLoading = (message) => {
+    results.innerHTML = `
+        <div class="loading-state" role="status" aria-live="polite">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <div>${message}</div>
+        </div>
+    `
+}
+
+const fitTextToOneLine = (element, maxFontSize = 14, minFontSize = 9) => {
+    element.style.fontSize = `${maxFontSize}px`
+
+    while (element.scrollWidth > element.clientWidth && maxFontSize > minFontSize) {
+        maxFontSize -= 0.5
+        element.style.fontSize = `${maxFontSize}px`
+    }
+}
+
+const fitLayoverText = () => {
+    document.querySelectorAll('.layover-item').forEach(item => fitTextToOneLine(item))
 }
 
 const search = async() => {
@@ -502,6 +534,7 @@ const search = async() => {
         inputs.classList.add('has-settings')
         inputs.appendChild(settings_btn)
         airlines.style.display = 'block'
+        showLoading('Searching flights...')
         const url = `/api/fetch-flights?start=${start}&end=${end}&date=${date}&gl=${gl}&hl=${hl}&currency=${currency}&type=${type}&sort_by=${sort_by}&include_airlines=${include_airlines_url}`
 
         try {
@@ -514,17 +547,19 @@ const search = async() => {
             result = data
             console.log(result)
 
-            results.innerHTML = 'Computing savings...'
+            showLoading('Computing savings...')
             await precomputeAllFlights(result.other_flights)
             generateList(result)
         } catch (error) {
             console.error('Search failed')
+            results.innerHTML = '<div class="error-state">Search failed. Please try again.</div>'
         }
     }
 }
 
 bigbutton.addEventListener('click', search)
 search_btn.addEventListener('click', search)
+window.addEventListener('resize', fitLayoverText)
 
 const settingsDialog = document.getElementById('settings-dialog')
 settings_btn.addEventListener('click', () => settingsDialog.show())
