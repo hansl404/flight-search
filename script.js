@@ -65,7 +65,7 @@ airline_buttons.forEach(button => {
 })
 
 // Helper functions
-const basefare = (price) => {
+const basefare = (price) => { // for U.S. airline mile calculations, current as of 2025 but not used due to basic economy flights no longer earning points
     let security = 5.6
     let flight_segment = 5.3
     let pec = 4.5
