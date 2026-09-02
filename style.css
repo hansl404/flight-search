@@ -527,6 +527,32 @@ sl-dialog::part(title) {
     white-space: nowrap;
 }
 
+.layover-mct {
+    margin-top: -0.45em;
+    color: #8b949e;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.mct-loading,
+.mct-unknown {
+    color: #8b949e;
+}
+
+.mct-risky {
+    color: #f85149;
+}
+
+.mct-tight {
+    color: #d29922;
+}
+
+.mct-comfortable {
+    color: #3fb950;
+}
+
 .stats {
     display: flex;
     flex-direction: column;

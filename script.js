@@ -12,6 +12,7 @@ const data = {
 // let result = mock  // store result of API call here once to minimize calls
 let result = {}
 const distCache = {}
+const mctCache = {}
 
 const inputs = document.getElementById('inputs')
 const get_curr_loc_btn = document.getElementById('get-curr-loc-btn')
@@ -94,6 +95,48 @@ const getDist = async(to,from) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+const getMct = async(airport) => {
+    if (!airport) return null
+    const code = airport.toUpperCase()
+    if (mctCache[code] !== undefined) return mctCache[code]
+
+    try {
+        const response = await fetch(`/api/mct/${code}`)
+        if (!response.ok) throw new Error(`MCT HTTP Error: ${response.status}`)
+        mctCache[code] = await response.json()
+    } catch (error) {
+        console.log(error)
+        mctCache[code] = null
+    }
+
+    return mctCache[code]
+}
+
+const getConnectionMinimum = (mctData, inboundAirline, outboundAirline) => {
+    if (!mctData) return null
+    if (inboundAirline !== outboundAirline && mctData.mct_interline) return mctData.mct_interline
+    return mctData.mct_international_to_international || mctData.mct_interline || null
+}
+
+const getLayoverStatus = (duration, minimum) => {
+    if (!minimum) return {label: 'MCT unavailable', className: 'mct-unknown'}
+    if (duration < minimum) return {label: 'Risky connection', className: 'mct-risky'}
+    if (duration < minimum + 30) return {label: 'Tight connection', className: 'mct-tight'}
+    return {label: 'Comfortable connection', className: 'mct-comfortable'}
+}
+
+const updateLayoverMct = async(layoverInfo, airport, duration, inboundAirline, outboundAirline) => {
+    const mctData = await getMct(airport)
+    const minimum = getConnectionMinimum(mctData, inboundAirline, outboundAirline)
+    const status = getLayoverStatus(duration, minimum)
+
+    layoverInfo.classList.remove('mct-loading', 'mct-unknown', 'mct-risky', 'mct-tight', 'mct-comfortable')
+    layoverInfo.classList.add(status.className)
+    layoverInfo.textContent = minimum
+        ? `Minimum recommended: ${minimum} min - ${status.label}`
+        : status.label
 }
 
 const refreshFilter = (airline) => {
@@ -326,6 +369,18 @@ async function openPopup(flight) {
             layoverItem.classList.add('layover-item')
             layoverItem.textContent = layoverString
             itinerary.appendChild(layoverItem)
+
+            let layoverInfo = document.createElement('div')
+            layoverInfo.classList.add('layover-mct', 'mct-loading')
+            layoverInfo.textContent = 'Checking minimum connection time...'
+            itinerary.appendChild(layoverInfo)
+            updateLayoverMct(
+                layoverInfo,
+                layovers[i].id || leg.arrival_airport.id,
+                layovers[i].duration,
+                leg.airline,
+                flight.flights[i + 1]?.airline
+            )
         }
     }
 
